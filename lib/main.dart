@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'details_screen.dart';
 import 'news_detail_screen.dart';
+import 'news_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,6 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Karims Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
@@ -60,7 +62,9 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const DetailsScreen()),
+                  MaterialPageRoute(
+                    builder: (context) => const DetailsScreen(),
+                  ),
                 );
               },
               child: const Text('Go to Details Screen'),
@@ -70,10 +74,22 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const NewsDetailScreen()),
+                  MaterialPageRoute(
+                    builder: (context) => const NewsDetailScreen(),
+                  ),
                 );
               },
               child: const Text('Go to Task Screen'),
+            ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const NewsScreen()),
+                );
+              },
+              child: const Text('Go to Task 2'),
             ),
           ],
         ),

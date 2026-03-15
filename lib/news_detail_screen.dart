@@ -38,8 +38,13 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Container(
-            width: MediaQuery.of(context).size.width * 1.5, // to allow horizontal scrolling
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+            width:
+                MediaQuery.of(context).size.width *
+                1.5, // to allow horizontal scrolling
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20.0,
+              vertical: 10.0,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -66,8 +71,12 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                           shape: BoxShape.circle,
                         ),
                         child: Icon(
-                          _isBookmarked ? Icons.bookmark : Icons.bookmark_border,
-                          color: _isBookmarked ? Colors.yellow[700] : Colors.grey[600],
+                          _isBookmarked
+                              ? Icons.bookmark
+                              : Icons.bookmark_border,
+                          color: _isBookmarked
+                              ? Colors.yellow[700]
+                              : Colors.grey[600],
                           size: 24,
                         ),
                       ),
@@ -77,7 +86,11 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                 const SizedBox(height: 8),
                 const Text(
                   'KHMER TIME | 2025-12-21',
-                  style: TextStyle(color: Colors.grey, fontSize: 12, fontWeight: FontWeight.w500),
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
                 const SizedBox(height: 20),
                 ClipRRect(
@@ -87,12 +100,6 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                     width: double.infinity,
                     height: 220,
                     fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) => Container(
-                      height: 220,
-                      width: double.infinity,
-                      color: Colors.grey[300],
-                      child: const Icon(Icons.image, size: 50, color: Colors.grey),
-                    ),
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -110,7 +117,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                   style: TextStyle(
                     fontSize: 15,
                     height: 1.6,
-                    color: Colors.black87,
+                    color: Colors.black,
                   ),
                 ),
               ],
@@ -121,3 +128,6 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
     );
   }
 }
+
+//grid build
+//

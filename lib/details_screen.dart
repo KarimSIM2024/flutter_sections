@@ -13,9 +13,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Details Screen"),
-      ),
+      appBar: AppBar(title: const Text("Details Screen")),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -40,10 +38,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
             const SizedBox(height: 20),
             const Icon(Icons.star, color: Colors.amber, size: 50),
             const SizedBox(height: 10),
-            const Text(
-              "Hello, ya f7oool",
-              style: TextStyle(fontSize: 30),
-            ),
+            const Text("Hello, ya f7oool", style: TextStyle(fontSize: 30)),
           ],
         ),
       ),

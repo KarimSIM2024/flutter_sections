@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 class NewsItem {
   final String title;
   final String description;
-  final String imageUrl;
+  final String imagePath;
   final String category;
 
   NewsItem({
     required this.title,
     required this.description,
-    required this.imageUrl,
+    required this.imagePath,
     required this.category,
   });
 }
@@ -25,58 +25,63 @@ class _NewsScreenState extends State<NewsScreen> {
   final List<String> categories = ['Home', 'Business', 'Politics', 'Sports'];
   String selectedCategory = 'Home';
 
+  // Explicitly defined data to avoid any null initialization issues
   final List<NewsItem> allNews = [
     NewsItem(
       title: 'Phnom Penh named a top place to visit in 2026 by "BBC Travel"',
-      description: 'The capital of Cambodia has been recognized for its vibrant culture and history.',
-      imageUrl: 'https://picsum.photos/id/10/400/200',
+      description: 'The capital of Cambodia...',
+      imagePath: 'assets/images/Phnom Penh.png',
       category: 'Home',
     ),
     NewsItem(
-      title: 'Elon Musk becomes first person worth \$700 billion following pay package ruling',
-      description: 'Tesla CEO\'s wealth soars after a favorable court decision regarding his compensation.',
-      imageUrl: 'https://picsum.photos/id/20/400/200',
+      title:
+          'Elon Musk becomes first person worth \$700 billion following pay package ruling',
+      description: 'Tesla CEO\'s wealth soars...',
+      imagePath: 'assets/images/elon musk.png',
       category: 'Business',
     ),
     NewsItem(
-      title: 'Elise Stefanik, loyal Trump ally, ends New York governor bid and will leave politics',
-      description: 'The Congresswoman announces a major shift in her political career.',
-      imageUrl: 'https://picsum.photos/id/30/400/200',
+      title: 'Elise Stefanik, loyal Trump ally, ends New York governor bid',
+      description: 'The Congresswoman announces...',
+      imagePath: "assets/images/Elise Stefanik's.png",
       category: 'Politics',
     ),
     NewsItem(
       title: 'McCullum wants to stay as England coach',
-      description: 'Brendon McCullum expresses his desire to continue leading the England cricket team.',
-      imageUrl: 'https://picsum.photos/id/40/400/200',
+      description: 'Brendon McCullum expresses...',
+      imagePath: 'assets/images/mccullum.png',
       category: 'Sports',
     ),
     NewsItem(
       title: 'Gold price climbs above \$4,400 to hit record high',
-      description: 'Precious metal reaches new heights amid global economic uncertainty.',
-      imageUrl: 'https://picsum.photos/id/50/200/200',
+      description: 'Precious metal reaches...',
+      imagePath:
+          'assets/images/gold .png', // Note the space before .png as in your file list
       category: 'Business',
     ),
     NewsItem(
-      title: 'King\'s Foundation chair and nominee peer admits misleading electorate claim',
-      description: 'A controversy arises over statements made during a campaign.',
-      imageUrl: 'https://picsum.photos/id/60/200/200',
+      title: "King's Foundation chair admits misleading electorate claim",
+      description: 'A controversy arises...',
+      imagePath: "assets/images/king's foundation.png",
       category: 'Politics',
     ),
     NewsItem(
       title: 'Man City to weigh players before Forest game',
-      description: 'Pep Guardiola implements strict fitness monitoring for his squad.',
-      imageUrl: 'https://picsum.photos/id/70/200/200',
+      description: 'Pep Guardiola implements...',
+      imagePath: 'assets/images/man city.png',
       category: 'Sports',
     ),
   ];
 
   @override
   Widget build(BuildContext context) {
-    List<NewsItem> filteredNews = selectedCategory == 'Home'
+    // Determine which items to show
+    final List<NewsItem> filteredNews = selectedCategory == 'Home'
         ? allNews
         : allNews.where((item) => item.category == selectedCategory).toList();
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         leading: const Icon(Icons.menu, color: Colors.red),
         title: const Text(
@@ -84,7 +89,7 @@ class _NewsScreenState extends State<NewsScreen> {
           style: TextStyle(
             color: Colors.red,
             fontWeight: FontWeight.bold,
-            fontFamily: 'Serif',
+            // Removed fontFamily: 'Serif' to avoid resolution errors
           ),
         ),
         centerTitle: true,
@@ -93,95 +98,111 @@ class _NewsScreenState extends State<NewsScreen> {
       ),
       body: Column(
         children: [
+          // Filter Chips
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: 12),
               child: Row(
-                children: categories.map((category) {
-                  bool isSelected = selectedCategory == category;
+                children: categories.map((cat) {
+                  final bool isSelected = selectedCategory == cat;
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 4.0),
                     child: ChoiceChip(
-                      label: Text(
-                        category,
-                        style: TextStyle(
-                          color: isSelected ? Colors.white : Colors.grey,
-                        ),
-                      ),
+                      label: Text(cat),
                       selected: isSelected,
-                      selectedColor: Colors.red,
-                      backgroundColor: Colors.grey[200],
-                      onSelected: (selected) {
-                        setState(() {
-                          selectedCategory = category;
-                        });
+                      onSelected: (bool selected) {
+                        if (selected) {
+                          setState(() {
+                            selectedCategory = cat;
+                          });
+                        }
                       },
-                      showCheckmark: isSelected && category != 'Home',
+                      selectedColor: Colors.red,
+                      labelStyle: TextStyle(
+                        color: isSelected ? Colors.white : Colors.black87,
+                      ),
+                      showCheckmark: false, // Cleaner look matching the image
                     ),
                   );
                 }).toList(),
               ),
             ),
           ),
+          // Scrollable List
           Expanded(
             child: ListView.separated(
               padding: const EdgeInsets.all(16.0),
               itemCount: filteredNews.length,
-              separatorBuilder: (context, index) => const SizedBox(height: 16),
+              separatorBuilder: (_, __) => const SizedBox(height: 20),
               itemBuilder: (context, index) {
-                final news = filteredNews[index];
+                final item = filteredNews[index];
+
+                // If it's the first item in 'Home', show large layout
                 if (index == 0 && selectedCategory == 'Home') {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ClipRRect(
-                        borderRadius: BorderRadius.circular(8.0),
-                        child: Image.network(
-                          news.imageUrl,
+                        borderRadius: BorderRadius.circular(12),
+                        child: Image.asset(
+                          item.imagePath,
                           height: 200,
                           width: double.infinity,
                           fit: BoxFit.cover,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        news.title,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                      ),
-                    ],
-                  );
-                } else {
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(8.0),
-                        child: Image.network(
-                          news.imageUrl,
-                          height: 80,
-                          width: 80,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Text(
-                          news.title,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
+                          errorBuilder: (context, _, __) => Container(
+                            height: 200,
+                            color: Colors.grey[200],
+                            child: const Icon(Icons.image_not_supported),
                           ),
-                          maxLines: 3,
-                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        item.title,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ],
                   );
                 }
+
+                // Standard list item layout
+                return Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.asset(
+                        item.imagePath,
+                        height: 85,
+                        width: 85,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, _, __) => Container(
+                          height: 85,
+                          width: 85,
+                          color: Colors.grey[200],
+                          child: const Icon(Icons.image_not_supported),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        item.title,
+                        style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                );
               },
             ),
           ),
