@@ -125,7 +125,7 @@ class _NewsScreenState extends State<NewsScreen> {
             child: ListView.separated(
               padding: const EdgeInsets.all(16.0),
               itemCount: filteredNews.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 20),
+              separatorBuilder: (_, _) => const SizedBox(height: 20),
               itemBuilder: (context, index) {
                 final item = filteredNews[index];
 
@@ -148,7 +148,7 @@ class _NewsScreenState extends State<NewsScreen> {
                                 height: 200,
                                 width: double.infinity,
                                 fit: BoxFit.cover,
-                                errorBuilder: (context, _, __) => Container(
+                                errorBuilder: (context, _, _) => Container(
                                   height: 200,
                                   color: Colors.grey[200],
                                   child: const Icon(Icons.image_not_supported),
@@ -175,7 +175,7 @@ class _NewsScreenState extends State<NewsScreen> {
                                 height: 85,
                                 width: 85,
                                 fit: BoxFit.cover,
-                                errorBuilder: (context, _, __) => Container(
+                                errorBuilder: (context, _, _) => Container(
                                   height: 85,
                                   width: 85,
                                   color: Colors.grey[200],

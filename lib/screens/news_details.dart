@@ -97,7 +97,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                   width: double.infinity,
                   height: 220,
                   fit: BoxFit.cover,
-                  errorBuilder: (context, _, __) => Container(
+                  errorBuilder: (context, _, _) => Container(
                     height: 220,
                     color: Colors.grey[200],
                     child: const Icon(Icons.image_not_supported),
@@ -106,12 +106,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
               ),
               const SizedBox(height: 20),
               Text(
-                widget.newsItem.description + '\n\n' +
-                'Phnom Penh has been recognised by \'BBC Travel\' as one of the world\'s 20 must-visit destinations for 2026, marking an exciting milestone for Cambodia\'s capital.\n\n'
-                'The prestigious list celebrates places that champion sustainable and meaningful travel, spotlighting destinations that offer rich cultural experiences while supporting local communities and protecting the environment.\n\n'
-                'According to \'BBC Travel\', Phnom Penh is entering \'a new era\', with creative and sustainable developments reshaping the city.\n\n'
-                'Long overshadowed by Siem Reap, the capital is now stepping confidently into the global spotlight.\n\n'
-                'A key highlight, \'BBC Travel\' emphasises, is the launch of Techo International Airport, Cambodia\'s largest-ever infrastructure project, which is set to significantly improve international access with new routes from the UAE, Turkey, China and Japan.',
+                '${widget.newsItem.description}\n\nPhnom Penh has been recognised by \'BBC Travel\' as one of the world\'s 20 must-visit destinations for 2026, marking an exciting milestone for Cambodia\'s capital.\n\nThe prestigious list celebrates places that champion sustainable and meaningful travel, spotlighting destinations that offer rich cultural experiences while supporting local communities and protecting the environment.\n\nAccording to \'BBC Travel\', Phnom Penh is entering \'a new era\', with creative and sustainable developments reshaping the city.\n\nLong overshadowed by Siem Reap, the capital is now stepping confidently into the global spotlight.\n\nA key highlight, \'BBC Travel\' emphasises, is the launch of Techo International Airport, Cambodia\'s largest-ever infrastructure project, which is set to significantly improve international access with new routes from the UAE, Turkey, China and Japan.',
                 style: const TextStyle(
                   fontSize: 15,
                   height: 1.6,
