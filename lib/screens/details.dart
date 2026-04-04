@@ -21,6 +21,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
             Image.asset(
               'assets/images/PHOTO-2025-05-06-21-17-41.jpg',
               height: 400,
+              errorBuilder: (context, error, stackTrace) => const Icon(Icons.image, size: 100),
             ),
             const SizedBox(height: 20),
             IconButton(

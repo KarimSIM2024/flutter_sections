@@ -1,18 +1,6 @@
 import 'package:flutter/material.dart';
-
-class NewsItem {
-  final String title;
-  final String description;
-  final String imagePath;
-  final String category;
-
-  NewsItem({
-    required this.title,
-    required this.description,
-    required this.imagePath,
-    required this.category,
-  });
-}
+import '../model/news_item.dart';
+import '../navigation/app_routes.dart';
 
 class NewsScreen extends StatefulWidget {
   const NewsScreen({super.key});
@@ -25,7 +13,6 @@ class _NewsScreenState extends State<NewsScreen> {
   final List<String> categories = ['Home', 'Business', 'Politics', 'Sports'];
   String selectedCategory = 'Home';
 
-  // Explicitly defined data to avoid any null initialization issues
   final List<NewsItem> allNews = [
     NewsItem(
       title: 'Phnom Penh named a top place to visit in 2026 by "BBC Travel"',
@@ -55,8 +42,7 @@ class _NewsScreenState extends State<NewsScreen> {
     NewsItem(
       title: 'Gold price climbs above \$4,400 to hit record high',
       description: 'Precious metal reaches...',
-      imagePath:
-          'assets/images/gold .png', // Note the space before .png as in your file list
+      imagePath: 'assets/images/gold .png',
       category: 'Business',
     ),
     NewsItem(
@@ -75,7 +61,6 @@ class _NewsScreenState extends State<NewsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Determine which items to show
     final List<NewsItem> filteredNews = selectedCategory == 'Home'
         ? allNews
         : allNews.where((item) => item.category == selectedCategory).toList();
@@ -89,16 +74,22 @@ class _NewsScreenState extends State<NewsScreen> {
           style: TextStyle(
             color: Colors.red,
             fontWeight: FontWeight.bold,
-            // Removed fontFamily: 'Serif' to avoid resolution errors
           ),
         ),
         centerTitle: true,
         backgroundColor: Colors.white,
         elevation: 0,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.favorite, color: Colors.red),
+            onPressed: () {
+              Navigator.pushNamed(context, AppRoutes.favorite);
+            },
+          ),
+        ],
       ),
       body: Column(
         children: [
-          // Filter Chips
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: SingleChildScrollView(
@@ -123,14 +114,13 @@ class _NewsScreenState extends State<NewsScreen> {
                       labelStyle: TextStyle(
                         color: isSelected ? Colors.white : Colors.black87,
                       ),
-                      showCheckmark: false, // Cleaner look matching the image
+                      showCheckmark: false,
                     ),
                   );
                 }).toList(),
               ),
             ),
           ),
-          // Scrollable List
           Expanded(
             child: ListView.separated(
               padding: const EdgeInsets.all(16.0),
@@ -139,69 +129,74 @@ class _NewsScreenState extends State<NewsScreen> {
               itemBuilder: (context, index) {
                 final item = filteredNews[index];
 
-                // If it's the first item in 'Home', show large layout
-                if (index == 0 && selectedCategory == 'Home') {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: Image.asset(
-                          item.imagePath,
-                          height: 200,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, _, __) => Container(
-                            height: 200,
-                            color: Colors.grey[200],
-                            child: const Icon(Icons.image_not_supported),
-                          ),
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      AppRoutes.newsDetails,
+                      arguments: item,
+                    );
+                  },
+                  child: index == 0 && selectedCategory == 'Home'
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(12),
+                              child: Image.asset(
+                                item.imagePath,
+                                height: 200,
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, _, __) => Container(
+                                  height: 200,
+                                  color: Colors.grey[200],
+                                  child: const Icon(Icons.image_not_supported),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                            Text(
+                              item.title,
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        )
+                      : Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.asset(
+                                item.imagePath,
+                                height: 85,
+                                width: 85,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, _, __) => Container(
+                                  height: 85,
+                                  width: 85,
+                                  color: Colors.grey[200],
+                                  child: const Icon(Icons.image_not_supported),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Text(
+                                item.title,
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                maxLines: 3,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      const SizedBox(height: 12),
-                      Text(
-                        item.title,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  );
-                }
-
-                // Standard list item layout
-                return Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Image.asset(
-                        item.imagePath,
-                        height: 85,
-                        width: 85,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, _, __) => Container(
-                          height: 85,
-                          width: 85,
-                          color: Colors.grey[200],
-                          child: const Icon(Icons.image_not_supported),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        item.title,
-                        style: const TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                        ),
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
                 );
               },
             ),
