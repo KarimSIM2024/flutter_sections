@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../model/news_item.dart';
 import '../navigation/app_routes.dart';
+import '../utiles/shared_pref.dart';
 
 class NewsScreen extends StatefulWidget {
   const NewsScreen({super.key});
@@ -12,6 +13,7 @@ class NewsScreen extends StatefulWidget {
 class _NewsScreenState extends State<NewsScreen> {
   final List<String> categories = ['Home', 'Business', 'Politics', 'Sports'];
   String selectedCategory = 'Home';
+  List<String> bookmarkedTitles = [];
 
   final List<NewsItem> allNews = [
     NewsItem(
@@ -21,8 +23,7 @@ class _NewsScreenState extends State<NewsScreen> {
       category: 'Home',
     ),
     NewsItem(
-      title:
-          'Elon Musk becomes first person worth \$700 billion following pay package ruling',
+      title: 'Elon Musk becomes first person worth \$700 billion following pay package ruling',
       description: 'Tesla CEO\'s wealth soars...',
       imagePath: 'assets/images/elon musk.png',
       category: 'Business',
@@ -60,6 +61,31 @@ class _NewsScreenState extends State<NewsScreen> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    _loadBookmarks();
+  }
+
+  Future<void> _loadBookmarks() async {
+    final bookmarks = await AuthPrefs.getBookmarks();
+    setState(() {
+      bookmarkedTitles = bookmarks;
+    });
+  }
+
+  Future<void> _toggleBookmark(String title) async {
+    await AuthPrefs.toggleBookmark(title);
+    await _loadBookmarks();
+  }
+
+  Future<void> _logout() async {
+    await AuthPrefs.logout();
+    if (mounted) {
+      Navigator.pushNamedAndRemoveUntil(context, AppRoutes.login, (route) => false);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final List<NewsItem> filteredNews = selectedCategory == 'Home'
         ? allNews
@@ -68,7 +94,10 @@ class _NewsScreenState extends State<NewsScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        leading: const Icon(Icons.menu, color: Colors.red),
+        leading: IconButton(
+          icon: const Icon(Icons.logout, color: Colors.red),
+          onPressed: _logout, // Logout option
+        ),
         title: const Text(
           'The News Post',
           style: TextStyle(
@@ -83,7 +112,7 @@ class _NewsScreenState extends State<NewsScreen> {
           IconButton(
             icon: const Icon(Icons.favorite, color: Colors.red),
             onPressed: () {
-              Navigator.pushNamed(context, AppRoutes.favorite);
+              Navigator.pushNamed(context, AppRoutes.favorite).then((_) => _loadBookmarks());
             },
           ),
         ],
@@ -128,6 +157,7 @@ class _NewsScreenState extends State<NewsScreen> {
               separatorBuilder: (_, _) => const SizedBox(height: 20),
               itemBuilder: (context, index) {
                 final item = filteredNews[index];
+                final isBookmarked = bookmarkedTitles.contains(item.title);
 
                 return GestureDetector(
                   onTap: () {
@@ -135,25 +165,40 @@ class _NewsScreenState extends State<NewsScreen> {
                       context,
                       AppRoutes.newsDetails,
                       arguments: item,
-                    );
+                    ).then((_) => _loadBookmarks());
                   },
                   child: index == 0 && selectedCategory == 'Home'
                       ? Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(12),
-                              child: Image.asset(
-                                item.imagePath,
-                                height: 200,
-                                width: double.infinity,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, _, _) => Container(
-                                  height: 200,
-                                  color: Colors.grey[200],
-                                  child: const Icon(Icons.image_not_supported),
+                            Stack(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(12),
+                                  child: Image.asset(
+                                    item.imagePath,
+                                    height: 200,
+                                    width: double.infinity,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (context, _, _) => Container(
+                                      height: 200,
+                                      color: Colors.grey[200],
+                                      child: const Icon(Icons.image_not_supported),
+                                    ),
+                                  ),
                                 ),
-                              ),
+                                Positioned(
+                                  top: 10,
+                                  right: 10,
+                                  child: IconButton(
+                                    icon: Icon(
+                                      isBookmarked ? Icons.bookmark : Icons.bookmark_border,
+                                      color: isBookmarked ? Colors.yellow[700] : Colors.white,
+                                    ),
+                                    onPressed: () => _toggleBookmark(item.title),
+                                  ),
+                                ),
+                              ],
                             ),
                             const SizedBox(height: 12),
                             Text(
@@ -185,15 +230,27 @@ class _NewsScreenState extends State<NewsScreen> {
                             ),
                             const SizedBox(width: 12),
                             Expanded(
-                              child: Text(
-                                item.title,
-                                style: const TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                                maxLines: 3,
-                                overflow: TextOverflow.ellipsis,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    item.title,
+                                    style: const TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    maxLines: 3,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
                               ),
+                            ),
+                            IconButton(
+                              icon: Icon(
+                                isBookmarked ? Icons.bookmark : Icons.bookmark_border,
+                                color: isBookmarked ? Colors.yellow[700] : Colors.grey,
+                              ),
+                              onPressed: () => _toggleBookmark(item.title),
                             ),
                           ],
                         ),

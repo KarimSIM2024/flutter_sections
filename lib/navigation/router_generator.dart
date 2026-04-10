@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../screens/home.dart';
-import '../screens/details.dart';
 import '../screens/news.dart';
 import '../screens/news_details.dart';
 import '../screens/favorite.dart';
+import '../screens/signup.dart';
+import '../screens/login.dart';
 import '../model/news_item.dart';
 import 'app_routes.dart';
 
@@ -12,11 +12,10 @@ class RouterGenerator {
     final args = settings.arguments;
 
     switch (settings.name) {
-      case AppRoutes.home:
-        return MaterialPageRoute(builder: (_) => const HomeScreen());
-      case AppRoutes.details:
-        // DetailsScreen might take arguments if needed, for now it's simple
-        return MaterialPageRoute(builder: (_) => const DetailsScreen());
+      case AppRoutes.signup:
+        return MaterialPageRoute(builder: (_) => const SignupScreen());
+      case AppRoutes.login:
+        return MaterialPageRoute(builder: (_) => const LoginScreen());
       case AppRoutes.news:
         return MaterialPageRoute(builder: (_) => const NewsScreen());
       case AppRoutes.newsDetails:

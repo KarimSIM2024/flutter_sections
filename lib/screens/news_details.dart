@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../model/news_item.dart';
+import '../utiles/shared_pref.dart';
 
 class NewsDetailScreen extends StatefulWidget {
   final NewsItem newsItem;
@@ -12,10 +13,22 @@ class NewsDetailScreen extends StatefulWidget {
 class _NewsDetailScreenState extends State<NewsDetailScreen> {
   bool _isBookmarked = false;
 
-  void _toggleBookmark() {
+  @override
+  void initState() {
+    super.initState();
+    _checkBookmarkStatus();
+  }
+
+  Future<void> _checkBookmarkStatus() async {
+    final status = await AuthPrefs.isBookmarked(widget.newsItem.title);
     setState(() {
-      _isBookmarked = !_isBookmarked;
+      _isBookmarked = status;
     });
+  }
+
+  Future<void> _toggleBookmark() async {
+    await AuthPrefs.toggleBookmark(widget.newsItem.title);
+    await _checkBookmarkStatus();
   }
 
   @override
