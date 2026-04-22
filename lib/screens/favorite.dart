@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../model/news_item.dart';
-import '../utiles/shared_pref.dart';
+import '../domain/entities/news_item.dart' as entity;
+import '../data/repositories/news_repository_impl.dart';
+import '../data/datasources/database_helper.dart';
 import '../navigation/app_routes.dart';
 
 class FavoriteScreen extends StatefulWidget {
@@ -11,76 +12,34 @@ class FavoriteScreen extends StatefulWidget {
 }
 
 class _FavoriteScreenState extends State<FavoriteScreen> {
-  List<String> bookmarkedTitles = [];
-
-  // Static list of news to match titles (In a real app, this would come from a data source)
-  final List<NewsItem> allNews = [
-    NewsItem(
-      title: 'Phnom Penh named a top place to visit in 2026 by "BBC Travel"',
-      description: 'The capital of Cambodia...',
-      imagePath: 'assets/images/Phnom Penh.png',
-      category: 'Home',
-    ),
-    NewsItem(
-      title:
-          'Elon Musk becomes first person worth \$700 billion following pay package ruling',
-      description: 'Tesla CEO\'s wealth soars...',
-      imagePath: 'assets/images/elon musk.png',
-      category: 'Business',
-    ),
-    NewsItem(
-      title: 'Elise Stefanik, loyal Trump ally, ends New York governor bid',
-      description: 'The Congresswoman announces...',
-      imagePath: "assets/images/Elise Stefanik's.png",
-      category: 'Politics',
-    ),
-    NewsItem(
-      title: 'McCullum wants to stay as England coach',
-      description: 'Brendon McCullum expresses...',
-      imagePath: 'assets/images/mccullum.png',
-      category: 'Sports',
-    ),
-    NewsItem(
-      title: 'Gold price climbs above \$4,400 to hit record high',
-      description: 'Precious metal reaches...',
-      imagePath: 'assets/images/gold .png',
-      category: 'Business',
-    ),
-    NewsItem(
-      title: "King's Foundation chair admits misleading electorate claim",
-      description: 'A controversy arises...',
-      imagePath: "assets/images/king's foundation.png",
-      category: 'Politics',
-    ),
-    NewsItem(
-      title: 'Man City to weigh players before Forest game',
-      description: 'Pep Guardiola implements...',
-      imagePath: 'assets/images/man city.png',
-      category: 'Sports',
-    ),
-  ];
+  final NewsRepositoryImpl repository = NewsRepositoryImpl(DatabaseHelper.instance);
+  List<entity.NewsItem> favoriteNews = [];
 
   @override
   void initState() {
     super.initState();
-    _loadBookmarks();
+    _loadFavorites();
   }
 
-  Future<void> _loadBookmarks() async {
-    final bookmarks = await AuthPrefs.getBookmarks();
+  Future<void> _loadFavorites() async {
+    final favorites = await repository.getFavorites();
     setState(() {
-      bookmarkedTitles = bookmarks;
+      favoriteNews = favorites;
     });
+  }
+
+  Future<void> _toggleFavorite(entity.NewsItem item) async {
+    await repository.toggleFavorite(item);
+    _loadFavorites();
   }
 
   @override
   Widget build(BuildContext context) {
-    final favoriteNews = allNews
-        .where((item) => bookmarkedTitles.contains(item.title))
-        .toList();
-
     return Scaffold(
-      appBar: AppBar(title: const Text("Bookmarks"), centerTitle: true),
+      appBar: AppBar(
+        title: const Text("Bookmarks"),
+        centerTitle: true,
+      ),
       body: favoriteNews.isEmpty
           ? const Center(child: Text("No bookmarks yet."))
           : ListView.separated(
@@ -97,6 +56,12 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                       width: 60,
                       height: 60,
                       fit: BoxFit.cover,
+                      errorBuilder: (context, _, _) => Container(
+                        width: 60,
+                        height: 60,
+                        color: Colors.grey[200],
+                        child: const Icon(Icons.image_not_supported),
+                      ),
                     ),
                   ),
                   title: Text(
@@ -105,12 +70,16 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.bookmark, color: Colors.amber),
+                    onPressed: () => _toggleFavorite(item),
+                  ),
                   onTap: () {
                     Navigator.pushNamed(
                       context,
                       AppRoutes.newsDetails,
                       arguments: item,
-                    ).then((_) => _loadBookmarks());
+                    ).then((_) => _loadFavorites());
                   },
                 );
               },

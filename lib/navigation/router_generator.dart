@@ -4,7 +4,7 @@ import '../screens/news_details.dart';
 import '../screens/favorite.dart';
 import '../screens/signup.dart';
 import '../screens/login.dart';
-import '../model/news_item.dart';
+import '../domain/entities/news_item.dart';
 import 'app_routes.dart';
 
 class RouterGenerator {

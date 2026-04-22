@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../model/news_item.dart';
-import '../utiles/shared_pref.dart';
+import '../domain/entities/news_item.dart';
+import '../data/repositories/news_repository_impl.dart';
+import '../data/datasources/database_helper.dart';
 
 class NewsDetailScreen extends StatefulWidget {
   final NewsItem newsItem;
@@ -12,6 +13,7 @@ class NewsDetailScreen extends StatefulWidget {
 
 class _NewsDetailScreenState extends State<NewsDetailScreen> {
   bool _isBookmarked = false;
+  final NewsRepositoryImpl repository = NewsRepositoryImpl(DatabaseHelper.instance);
 
   @override
   void initState() {
@@ -20,14 +22,14 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
   }
 
   Future<void> _checkBookmarkStatus() async {
-    final status = await AuthPrefs.isBookmarked(widget.newsItem.title);
+    final status = await repository.isFavorite(widget.newsItem.id);
     setState(() {
       _isBookmarked = status;
     });
   }
 
   Future<void> _toggleBookmark() async {
-    await AuthPrefs.toggleBookmark(widget.newsItem.title);
+    await repository.toggleFavorite(widget.newsItem);
     await _checkBookmarkStatus();
   }
 
@@ -114,7 +116,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
               ),
               const SizedBox(height: 20),
               Text(
-                '${widget.newsItem.description}\n\nPhnom Penh has been recognised by \'BBC Travel\' as one of the world\'s 20 must-visit destinations for 2026, marking an exciting milestone for Cambodia\'s capital.\n\nThe prestigious list celebrates places that champion sustainable and meaningful travel, spotlighting destinations that offer rich cultural experiences while supporting local communities and protecting the environment.\n\nAccording to \'BBC Travel\', Phnom Penh is entering \'a new era\', with creative and sustainable developments reshaping the city.\n\nLong overshadowed by Siem Reap, the capital is now stepping confidently into the global spotlight.\n\nA key highlight, \'BBC Travel\' emphasises, is the launch of Techo International Airport, Cambodia\'s largest-ever infrastructure project, which is set to significantly improve international access with new routes from the UAE, Turkey, China and Japan.',
+                widget.newsItem.description,
                 style: const TextStyle(
                   fontSize: 15,
                   height: 1.6,
