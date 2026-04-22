@@ -23,7 +23,8 @@ class _NewsScreenState extends State<NewsScreen> {
       category: 'Home',
     ),
     NewsItem(
-      title: 'Elon Musk becomes first person worth \$700 billion following pay package ruling',
+      title:
+          'Elon Musk becomes first person worth \$700 billion following pay package ruling',
       description: 'Tesla CEO\'s wealth soars...',
       imagePath: 'assets/images/elon musk.png',
       category: 'Business',
@@ -81,7 +82,11 @@ class _NewsScreenState extends State<NewsScreen> {
   Future<void> _logout() async {
     await AuthPrefs.logout();
     if (mounted) {
-      Navigator.pushNamedAndRemoveUntil(context, AppRoutes.login, (route) => false);
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        AppRoutes.login,
+        (route) => false,
+      );
     }
   }
 
@@ -100,10 +105,7 @@ class _NewsScreenState extends State<NewsScreen> {
         ),
         title: const Text(
           'The News Post',
-          style: TextStyle(
-            color: Colors.red,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         backgroundColor: Colors.white,
@@ -112,7 +114,10 @@ class _NewsScreenState extends State<NewsScreen> {
           IconButton(
             icon: const Icon(Icons.favorite, color: Colors.red),
             onPressed: () {
-              Navigator.pushNamed(context, AppRoutes.favorite).then((_) => _loadBookmarks());
+              Navigator.pushNamed(
+                context,
+                AppRoutes.favorite,
+              ).then((_) => _loadBookmarks());
             },
           ),
         ],
@@ -183,7 +188,9 @@ class _NewsScreenState extends State<NewsScreen> {
                                     errorBuilder: (context, _, _) => Container(
                                       height: 200,
                                       color: Colors.grey[200],
-                                      child: const Icon(Icons.image_not_supported),
+                                      child: const Icon(
+                                        Icons.image_not_supported,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -192,10 +199,15 @@ class _NewsScreenState extends State<NewsScreen> {
                                   right: 10,
                                   child: IconButton(
                                     icon: Icon(
-                                      isBookmarked ? Icons.bookmark : Icons.bookmark_border,
-                                      color: isBookmarked ? Colors.yellow[700] : Colors.white,
+                                      isBookmarked
+                                          ? Icons.bookmark
+                                          : Icons.bookmark_border,
+                                      color: isBookmarked
+                                          ? Colors.yellow[700]
+                                          : Colors.white,
                                     ),
-                                    onPressed: () => _toggleBookmark(item.title),
+                                    onPressed: () =>
+                                        _toggleBookmark(item.title),
                                   ),
                                 ),
                               ],
@@ -247,8 +259,12 @@ class _NewsScreenState extends State<NewsScreen> {
                             ),
                             IconButton(
                               icon: Icon(
-                                isBookmarked ? Icons.bookmark : Icons.bookmark_border,
-                                color: isBookmarked ? Colors.yellow[700] : Colors.grey,
+                                isBookmarked
+                                    ? Icons.bookmark
+                                    : Icons.bookmark_border,
+                                color: isBookmarked
+                                    ? Colors.yellow[700]
+                                    : Colors.grey,
                               ),
                               onPressed: () => _toggleBookmark(item.title),
                             ),

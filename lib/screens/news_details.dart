@@ -51,10 +51,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 20.0,
-            vertical: 10.0,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -81,9 +78,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
-                        _isBookmarked
-                            ? Icons.bookmark
-                            : Icons.bookmark_border,
+                        _isBookmarked ? Icons.bookmark : Icons.bookmark_border,
                         color: _isBookmarked
                             ? Colors.yellow[700]
                             : Colors.grey[600],

@@ -33,11 +33,13 @@ class RouterGenerator {
   }
 
   static Route<dynamic> _errorRoute() {
-    return MaterialPageRoute(builder: (_) {
-      return Scaffold(
-        appBar: AppBar(title: const Text('Error')),
-        body: const Center(child: Text('Page not found')),
-      );
-    });
+    return MaterialPageRoute(
+      builder: (_) {
+        return Scaffold(
+          appBar: AppBar(title: const Text('Error')),
+          body: const Center(child: Text('Page not found')),
+        );
+      },
+    );
   }
 }

@@ -32,9 +32,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (mounted) {
       if (error != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(error)),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(error)));
       } else {
         Navigator.pushNamedAndRemoveUntil(
           context,
@@ -61,7 +61,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   icon: const Icon(Icons.arrow_back_ios, size: 20),
                   style: IconButton.styleFrom(
                     backgroundColor: Colors.grey[100],
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 40),
@@ -72,14 +74,19 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 const SizedBox(height: 60),
-                const Text("Email Address", style: TextStyle(fontWeight: FontWeight.w500)),
+                const Text(
+                  "Email Address",
+                  style: TextStyle(fontWeight: FontWeight.w500),
+                ),
                 const SizedBox(height: 8),
                 TextFormField(
                   controller: emailController,
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
                     hintText: "example@gmail.com",
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                   ),
                   validator: (v) {
                     final value = v?.trim() ?? "";
@@ -92,10 +99,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text("Password", style: TextStyle(fontWeight: FontWeight.w500)),
+                    const Text(
+                      "Password",
+                      style: TextStyle(fontWeight: FontWeight.w500),
+                    ),
                     TextButton(
                       onPressed: () {},
-                      child: const Text("Forgot Password", style: TextStyle(color: Colors.orange)),
+                      child: const Text(
+                        "Forgot Password",
+                        style: TextStyle(color: Colors.orange),
+                      ),
                     ),
                   ],
                 ),
@@ -104,9 +117,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   obscureText: hidePass,
                   decoration: InputDecoration(
                     hintText: "********",
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                     suffixIcon: IconButton(
-                      icon: Icon(hidePass ? Icons.visibility_off_outlined : Icons.visibility_outlined),
+                      icon: Icon(
+                        hidePass
+                            ? Icons.visibility_off_outlined
+                            : Icons.visibility_outlined,
+                      ),
                       onPressed: () => setState(() => hidePass = !hidePass),
                     ),
                   ),
@@ -125,7 +144,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.orange[400],
                       foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25),
+                      ),
                     ),
                     child: const Text("Login"),
                   ),
@@ -136,10 +157,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     const Text("Don’t have an Account? "),
                     GestureDetector(
-                      onTap: () => Navigator.pushNamed(context, AppRoutes.signup),
+                      onTap: () =>
+                          Navigator.pushNamed(context, AppRoutes.signup),
                       child: const Text(
                         "Sign up here",
-                        style: TextStyle(color: Colors.orange, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          color: Colors.orange,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ],

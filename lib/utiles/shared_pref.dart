@@ -42,7 +42,7 @@ class AuthPrefs {
     if (storedEmail == null || storedEmail != email || storedPass != password) {
       return "Invalid email or password";
     }
-    
+
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_isLoggedInKey, true);
     return null; // Success

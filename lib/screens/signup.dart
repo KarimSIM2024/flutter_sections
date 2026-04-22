@@ -37,7 +37,9 @@ class _SignupScreenState extends State<SignupScreen> {
     if (!acceptedTerms) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Please accept the terms and conditions")),
+          const SnackBar(
+            content: Text("Please accept the terms and conditions"),
+          ),
         );
       }
       return;
@@ -51,9 +53,9 @@ class _SignupScreenState extends State<SignupScreen> {
     bool exists = await AuthPrefs.checkIfUserExists(email);
     if (exists) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("User already exists")),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text("User already exists")));
       }
       return;
     }
@@ -81,7 +83,9 @@ class _SignupScreenState extends State<SignupScreen> {
                   icon: const Icon(Icons.arrow_back_ios, size: 20),
                   style: IconButton.styleFrom(
                     backgroundColor: Colors.grey[100],
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -92,13 +96,18 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                 ),
                 const SizedBox(height: 30),
-                const Text("Full Name", style: TextStyle(fontWeight: FontWeight.w500)),
+                const Text(
+                  "Full Name",
+                  style: TextStyle(fontWeight: FontWeight.w500),
+                ),
                 const SizedBox(height: 8),
                 TextFormField(
                   controller: usernameController,
                   decoration: InputDecoration(
                     hintText: "Karim Wael",
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                   ),
                   validator: (v) {
                     final value = v?.trim() ?? "";
@@ -108,14 +117,19 @@ class _SignupScreenState extends State<SignupScreen> {
                   },
                 ),
                 const SizedBox(height: 16),
-                const Text("Email Address", style: TextStyle(fontWeight: FontWeight.w500)),
+                const Text(
+                  "Email Address",
+                  style: TextStyle(fontWeight: FontWeight.w500),
+                ),
                 const SizedBox(height: 8),
                 TextFormField(
                   controller: emailController,
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
                     hintText: "example@email.com",
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                   ),
                   validator: (v) {
                     final value = v?.trim() ?? "";
@@ -125,16 +139,25 @@ class _SignupScreenState extends State<SignupScreen> {
                   },
                 ),
                 const SizedBox(height: 16),
-                const Text("Password", style: TextStyle(fontWeight: FontWeight.w500)),
+                const Text(
+                  "Password",
+                  style: TextStyle(fontWeight: FontWeight.w500),
+                ),
                 const SizedBox(height: 8),
                 TextFormField(
                   controller: passController,
                   obscureText: hidePass,
                   decoration: InputDecoration(
                     hintText: "********",
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                     suffixIcon: IconButton(
-                      icon: Icon(hidePass ? Icons.visibility_off_outlined : Icons.visibility_outlined),
+                      icon: Icon(
+                        hidePass
+                            ? Icons.visibility_off_outlined
+                            : Icons.visibility_outlined,
+                      ),
                       onPressed: () => setState(() => hidePass = !hidePass),
                     ),
                   ),
@@ -146,23 +169,34 @@ class _SignupScreenState extends State<SignupScreen> {
                   },
                 ),
                 const SizedBox(height: 16),
-                const Text("Confirm Password", style: TextStyle(fontWeight: FontWeight.w500)),
+                const Text(
+                  "Confirm Password",
+                  style: TextStyle(fontWeight: FontWeight.w500),
+                ),
                 const SizedBox(height: 8),
                 TextFormField(
                   controller: confirmController,
                   obscureText: hideConfirm,
                   decoration: InputDecoration(
                     hintText: "********",
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                     suffixIcon: IconButton(
-                      icon: Icon(hideConfirm ? Icons.visibility_off_outlined : Icons.visibility_outlined),
-                      onPressed: () => setState(() => hideConfirm = !hideConfirm),
+                      icon: Icon(
+                        hideConfirm
+                            ? Icons.visibility_off_outlined
+                            : Icons.visibility_outlined,
+                      ),
+                      onPressed: () =>
+                          setState(() => hideConfirm = !hideConfirm),
                     ),
                   ),
                   validator: (v) {
                     final value = v ?? "";
                     if (value.isEmpty) return "Confirm password is required";
-                    if (value != passController.text) return "Passwords do not match";
+                    if (value != passController.text)
+                      return "Passwords do not match";
                     return null;
                   },
                 ),
@@ -186,7 +220,9 @@ class _SignupScreenState extends State<SignupScreen> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.orange[400],
                       foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25),
+                      ),
                     ),
                     child: const Text("Signup"),
                   ),
@@ -197,10 +233,14 @@ class _SignupScreenState extends State<SignupScreen> {
                   children: [
                     const Text("Have an Account? "),
                     GestureDetector(
-                      onTap: () => Navigator.pushNamed(context, AppRoutes.login),
+                      onTap: () =>
+                          Navigator.pushNamed(context, AppRoutes.login),
                       child: const Text(
                         "Sign in here",
-                        style: TextStyle(color: Colors.orange, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          color: Colors.orange,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ],

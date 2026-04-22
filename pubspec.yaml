@@ -12,6 +12,8 @@ dependencies:
     sdk: flutter
   shared_preferences: ^2.5.5
   cupertino_icons: ^1.0.8
+  sqflite: ^2.3.0
+  path: ^1.9.0
 
 dev_dependencies:
   flutter_test:

@@ -12,7 +12,7 @@ class FavoriteScreen extends StatefulWidget {
 
 class _FavoriteScreenState extends State<FavoriteScreen> {
   List<String> bookmarkedTitles = [];
-  
+
   // Static list of news to match titles (In a real app, this would come from a data source)
   final List<NewsItem> allNews = [
     NewsItem(
@@ -22,7 +22,8 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
       category: 'Home',
     ),
     NewsItem(
-      title: 'Elon Musk becomes first person worth \$700 billion following pay package ruling',
+      title:
+          'Elon Musk becomes first person worth \$700 billion following pay package ruling',
       description: 'Tesla CEO\'s wealth soars...',
       imagePath: 'assets/images/elon musk.png',
       category: 'Business',
@@ -74,13 +75,12 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final favoriteNews = allNews.where((item) => bookmarkedTitles.contains(item.title)).toList();
+    final favoriteNews = allNews
+        .where((item) => bookmarkedTitles.contains(item.title))
+        .toList();
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Bookmarks"),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: const Text("Bookmarks"), centerTitle: true),
       body: favoriteNews.isEmpty
           ? const Center(child: Text("No bookmarks yet."))
           : ListView.separated(
